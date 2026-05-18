@@ -191,6 +191,7 @@ export default function Sidebar() {
 		canRedo,
 		resetResume,
 		resumeData,
+		theme,
 		exportResume,
 		importResume,
 	} = useStore();
@@ -227,7 +228,6 @@ export default function Sidebar() {
 			exportToPDF(null);
 		} catch (error) {
 			toast.error("Failed to export PDF");
-			console.error("PDF export error:", error);
 		}
 	};
 
@@ -237,7 +237,7 @@ export default function Sidebar() {
 			await exportToDOCX(
 				resumeData,
 				`${resumeData.personalInfo.fullName || "resume"}.docx`,
-				useStore.getState().theme,
+				theme,
 				sectionOrder,
 				sectionVisibility,
 			);
@@ -246,7 +246,6 @@ export default function Sidebar() {
 		} catch (error) {
 			toast.dismiss();
 			toast.error("Failed to export DOCX");
-			console.error("DOCX export error:", error);
 		}
 	};
 

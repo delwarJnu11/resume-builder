@@ -1,7 +1,6 @@
 'use client';
 
 import { useResumeStore } from '@/store/resume-store';
-import { SECTION_LABELS } from '@/types';
 import { cn } from '@/lib/utils';
 import { Mail, Phone, MapPin, Link2 } from 'lucide-react';
 import { forwardRef } from 'react';
