@@ -20,7 +20,7 @@ export default function AdsterraBanner({ slot, size = "responsive", className = 
 		hasLoadedRef.current = true;
 
 		const script = document.createElement("script");
-		script.src = "https://www.highperformanceformat.com/023e73d50c6d43a4b6756f9f0644ea1f/invoke.js"; // Replace with your actual Adsterra banner script URL
+		script.src = "https://pl29485623.effectivecpmnetwork.com/17/29/4d/17294d9a11b1cd0b71fc75561dfe45ff.js"; // Replace with your actual Adsterra banner script URL
 		script.async = true;
 		script.setAttribute("data-cfasync", "false");
 
