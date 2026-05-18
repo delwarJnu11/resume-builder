@@ -1,15 +1,14 @@
 'use client';
 
 import { useResumeStore } from '@/store/resume-store';
-import { SingleColumnTemplate } from '@/components/templates/single-column';
-import { TwoColumnTemplate } from '@/components/templates/two-column';
+import { CVTemplate } from '@/components/templates/cv-template';
 import { ZoomIn, Maximize2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState, useRef, useEffect, useCallback } from 'react';
 import { useReactToPrint } from 'react-to-print';
 
-export default function ResumePreview() {
-  const { theme, resumeData } = useResumeStore();
+export default function CVPreview() {
+  const { resumeData } = useResumeStore();
   const [zoom, setZoom] = useState(75);
   const printRef = useRef<HTMLDivElement>(null);
 
@@ -17,14 +16,11 @@ export default function ResumePreview() {
   const zoomOut = () => setZoom((prev) => Math.max(prev - 10, 50));
   const resetZoom = () => setZoom(75);
 
-  const Template = theme.template === 'two-column' ? TwoColumnTemplate : SingleColumnTemplate;
-
-  const filename = `${resumeData.personalInfo.fullName || 'resume'}.pdf`;
+  const filename = `${resumeData.personalInfo.fullName || 'cv'}-CV.pdf`;
 
   const handlePrint = useReactToPrint({
     contentRef: printRef,
     documentTitle: filename,
-    // Inject styles into the print iframe so the resume renders at full A4 size
     pageStyle: `
       @page {
         size: A4 portrait;
@@ -65,7 +61,12 @@ export default function ResumePreview() {
     <div className="flex flex-col h-full bg-slate-100">
       {/* Toolbar */}
       <div className="flex items-center justify-between px-4 py-2.5 bg-white border-b border-slate-200">
-        <span className="text-sm font-medium text-slate-700">Preview</span>
+        <div className="flex items-center gap-2">
+          <div className="w-5 h-5 rounded bg-violet-600 flex items-center justify-center">
+            <span className="text-white text-[8px] font-bold leading-none">CV</span>
+          </div>
+          <span className="text-sm font-medium text-slate-700">CV Preview</span>
+        </div>
         <div className="flex items-center gap-1">
           <Button
             variant="ghost"
@@ -106,7 +107,7 @@ export default function ResumePreview() {
         </div>
       </div>
 
-      {/* Scrollable preview area */}
+      {/* Scrollable preview */}
       <div className="flex-1 overflow-auto p-6">
         <div
           ref={printRef}
@@ -119,7 +120,7 @@ export default function ResumePreview() {
             transformOrigin: 'top center',
           }}
         >
-          <Template />
+          <CVTemplate />
         </div>
       </div>
     </div>

@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Palette, Type, Ruler, Check } from 'lucide-react';
 import { useState } from 'react';
 
-export default function CustomizationPanel() {
+export default function CustomizationPanel({ mode = 'resume' }: { mode?: 'resume' | 'cv' }) {
   const { theme, setTheme } = useResumeStore();
   const [activeTab, setActiveTab] = useState<'colors' | 'fonts' | 'spacing'>('colors');
 
@@ -158,37 +158,39 @@ export default function CustomizationPanel() {
             />
           </div>
 
-          <div>
-            <label className="text-xs font-medium text-slate-600 mb-2 block">Layout</label>
-            <div className="grid grid-cols-2 gap-2">
-              {(['single-column', 'two-column'] as const).map((layout) => (
-                <button
-                  key={layout}
-                  onClick={() => setTheme({ template: layout })}
-                  className={cn(
-                    'p-2.5 rounded-lg border transition-all text-center',
-                    theme.template === layout
-                      ? 'border-slate-900 bg-slate-50'
-                      : 'border-slate-200 hover:border-slate-300'
-                  )}
-                >
-                  <div className="flex gap-0.5 justify-center mb-1.5">
-                    {layout === 'single-column' ? (
-                      <div className="w-6 h-4 rounded border border-slate-300" />
-                    ) : (
-                      <>
-                        <div className="w-4 h-4 rounded border border-slate-300" />
-                        <div className="w-2 h-4 rounded border border-slate-300" />
-                      </>
+          {mode !== 'cv' && (
+            <div>
+              <label className="text-xs font-medium text-slate-600 mb-2 block">Layout</label>
+              <div className="grid grid-cols-2 gap-2">
+                {(['single-column', 'two-column'] as const).map((layout) => (
+                  <button
+                    key={layout}
+                    onClick={() => setTheme({ template: layout })}
+                    className={cn(
+                      'p-2.5 rounded-lg border transition-all text-center',
+                      theme.template === layout
+                        ? 'border-slate-900 bg-slate-50'
+                        : 'border-slate-200 hover:border-slate-300'
                     )}
-                  </div>
-                  <span className="text-xs text-slate-700">
-                    {layout === 'single-column' ? 'Single' : 'Two Column'}
-                  </span>
-                </button>
-              ))}
+                  >
+                    <div className="flex gap-0.5 justify-center mb-1.5">
+                      {layout === 'single-column' ? (
+                        <div className="w-6 h-4 rounded border border-slate-300" />
+                      ) : (
+                        <>
+                          <div className="w-4 h-4 rounded border border-slate-300" />
+                          <div className="w-2 h-4 rounded border border-slate-300" />
+                        </>
+                      )}
+                    </div>
+                    <span className="text-xs text-slate-700">
+                      {layout === 'single-column' ? 'Single' : 'Two Column'}
+                    </span>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
     </div>

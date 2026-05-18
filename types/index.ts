@@ -169,6 +169,7 @@ export interface ResumeState {
   activeSection: string;
   history: ResumeState[];
   historyIndex: number;
+  _hydrated: boolean;
   setResumeData: (data: Partial<ResumeData>) => void;
   setSectionOrder: (order: string[]) => void;
   setSectionVisibility: (id: string, visible: boolean) => void;

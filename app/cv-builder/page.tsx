@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Sidebar from '@/components/sidebar';
 import EditorPanel from '@/components/editor-panel';
-import ResumePreview from '@/components/resume-preview';
+import CVPreview from '@/components/cv-preview';
 import ProgressBar from '@/components/progress-bar';
 import { Menu, X, PanelLeft, PanelRight, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -11,7 +11,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useResumeStore } from '@/store/resume-store';
 
-export default function BuilderPage() {
+export default function CVBuilderPage() {
   const [mobileView, setMobileView] = useState<'editor' | 'preview'>('editor');
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const hydrate = useResumeStore((s) => s._hydrate);
@@ -22,6 +22,7 @@ export default function BuilderPage() {
 
   return (
     <div className="h-screen flex flex-col bg-slate-50">
+      {/* Mobile header */}
       <header className="lg:hidden bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Link href="/" className="p-1.5 hover:bg-slate-100 rounded-lg transition-colors">
@@ -31,10 +32,10 @@ export default function BuilderPage() {
             {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </Button>
           <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded-lg bg-slate-900 flex items-center justify-center">
-              <span className="text-white text-xs font-bold">R</span>
+            <div className="w-7 h-7 rounded-lg bg-violet-600 flex items-center justify-center">
+              <span className="text-white text-xs font-bold">CV</span>
             </div>
-            <span className="text-sm font-semibold">Resume Builder</span>
+            <span className="text-sm font-semibold">CV Builder</span>
           </div>
         </div>
         <div className="flex bg-slate-100 rounded-lg p-0.5">
@@ -60,9 +61,10 @@ export default function BuilderPage() {
       <div className="flex-1 flex overflow-hidden">
         {/* Sidebar desktop */}
         <div className="hidden lg:block">
-          <Sidebar mode="resume" />
+          <Sidebar mode="cv" />
         </div>
 
+        {/* Sidebar mobile overlay */}
         <AnimatePresence>
           {sidebarOpen && (
             <>
@@ -80,25 +82,36 @@ export default function BuilderPage() {
                 transition={{ type: 'spring', damping: 25, stiffness: 200 }}
                 className="lg:hidden fixed left-0 top-0 bottom-0 z-50 w-72"
               >
-                <Sidebar mode="resume" />
+                <Sidebar mode="cv" />
               </motion.div>
             </>
           )}
         </AnimatePresence>
 
+        {/* Main content */}
         <main className="flex-1 flex overflow-hidden">
-          <div className={`flex-1 flex flex-col overflow-hidden min-w-0 ${mobileView === 'editor' ? 'block' : 'hidden lg:flex'}`}>
+          {/* Editor */}
+          <div
+            className={`flex-1 flex flex-col overflow-hidden min-w-0 ${
+              mobileView === 'editor' ? 'block' : 'hidden lg:flex'
+            }`}
+          >
             <div className="px-6 py-3 bg-white border-b border-slate-200">
               <ProgressBar />
             </div>
             <div className="flex-1 overflow-hidden">
-              <EditorPanel mode="resume" />
+              <EditorPanel mode="cv" />
             </div>
           </div>
 
-          <div className={`flex-1 overflow-hidden bg-slate-100 border-l border-slate-200 ${mobileView === 'preview' ? 'block' : 'hidden lg:block'}`}>
+          {/* CV Preview */}
+          <div
+            className={`flex-1 overflow-hidden bg-slate-100 border-l border-slate-200 ${
+              mobileView === 'preview' ? 'block' : 'hidden lg:block'
+            }`}
+          >
             <div data-resume-preview className="h-full">
-              <ResumePreview />
+              <CVPreview />
             </div>
           </div>
         </main>

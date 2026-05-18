@@ -39,8 +39,13 @@ const saveToStorage = (state: ResumeState) => {
   }
 };
 
-const initialState: Omit<ResumeState, 'setResumeData' | 'setSectionOrder' | 'setSectionVisibility' | 'setTheme' | 'setActiveSection' | 'undo' | 'redo' | 'resetResume' | 'importResume' | 'exportResume'> = {
-  resumeData: sampleResumeData,
+const buildInitialState = (): Omit<
+  ResumeState,
+  'setResumeData' | 'setSectionOrder' | 'setSectionVisibility' | 'setTheme' |
+  'setActiveSection' | 'undo' | 'redo' | 'resetResume' | 'importResume' | 'exportResume' |
+  '_hydrate'
+> => ({
+  resumeData: { ...sampleResumeData },
   sectionOrder: [...SECTION_IDS],
   sectionVisibility: { ...defaultSectionVisibility },
   theme: { ...defaultTheme },
@@ -49,102 +54,113 @@ const initialState: Omit<ResumeState, 'setResumeData' | 'setSectionOrder' | 'set
   historyIndex: -1,
   canUndo: false,
   canRedo: false,
+  _hydrated: false,
+});
+
+type StoreActions = {
+  setResumeData: (data: Partial<ResumeData>) => void;
+  setSectionOrder: (order: string[]) => void;
+  setSectionVisibility: (id: string, visible: boolean) => void;
+  setTheme: (theme: Partial<ThemeConfig>) => void;
+  setActiveSection: (section: string) => void;
+  undo: () => void;
+  redo: () => void;
+  resetResume: () => void;
+  importResume: (data: ResumeState) => void;
+  exportResume: () => ResumeState;
+  _hydrate: () => void;
 };
 
-export const useResumeStore = create<ResumeState>((set, get) => {
-  const stored = loadFromStorage();
+type ResumeStore = ResumeState & StoreActions;
 
-  const baseState = {
-    ...initialState,
-    ...(stored || {}),
-    history: [],
-    historyIndex: -1,
-  };
-
-  // Migrate: ensure all current SECTION_IDS are in sectionOrder and sectionVisibility
-  const missingSections = SECTION_IDS.filter((id) => !baseState.sectionOrder.includes(id));
-  if (missingSections.length > 0) {
-    baseState.sectionOrder = [...baseState.sectionOrder, ...missingSections];
-  }
-  for (const id of SECTION_IDS) {
-    if (baseState.sectionVisibility[id] === undefined) {
-      baseState.sectionVisibility[id] = defaultSectionVisibility[id] ?? true;
-    }
-  }
-
-  // Migrate: ensure declaration exists in resumeData
-  if (!baseState.resumeData?.declaration) {
-    baseState.resumeData = {
-      ...baseState.resumeData,
-      declaration: { ...sampleResumeData.declaration },
-    };
-  }
-
-  const pushHistory = (state: Omit<ResumeState, 'history' | 'historyIndex' | 'canUndo' | 'canRedo'>) => {
-    const current = get();
-    const newHistory = current.history.slice(0, current.historyIndex + 1);
-    newHistory.push({
-      resumeData: state.resumeData,
-      sectionOrder: state.sectionOrder,
-      sectionVisibility: state.sectionVisibility,
-      theme: state.theme,
-      activeSection: state.activeSection,
-      history: [],
-      historyIndex: -1,
-      canUndo: false,
-      canRedo: false,
-      setResumeData: () => {},
-      setSectionOrder: () => {},
-      setSectionVisibility: () => {},
-      setTheme: () => {},
-      setActiveSection: () => {},
-      undo: () => {},
-      redo: () => {},
-      resetResume: () => {},
-      importResume: () => {},
-      exportResume: () => ({}) as ResumeState,
-    });
-
-    if (newHistory.length > MAX_HISTORY) {
-      newHistory.shift();
-    }
-
-    return {
-      history: newHistory,
-      historyIndex: newHistory.length - 1,
-      canUndo: newHistory.length > 1,
-      canRedo: false,
-    };
-  };
+export const useResumeStore = create<ResumeStore>((set, get) => {
+  const initial = buildInitialState();
 
   return {
-    ...baseState,
+    ...initial,
 
     setResumeData: (data: Partial<ResumeData>) => {
-      const historyUpdate = pushHistory(get());
-      const newResumeData = { ...get().resumeData, ...data };
-      set({ ...historyUpdate, resumeData: newResumeData });
-      saveToStorage(get());
+      const current = get();
+      const newHistory = current.history.slice(0, current.historyIndex + 1);
+      newHistory.push({
+        resumeData: { ...current.resumeData },
+        sectionOrder: [...current.sectionOrder],
+        sectionVisibility: { ...current.sectionVisibility },
+        theme: { ...current.theme },
+        activeSection: current.activeSection,
+        history: [],
+        historyIndex: -1,
+        canUndo: false,
+        canRedo: false,
+      } as ResumeStore);
+      if (newHistory.length > MAX_HISTORY) newHistory.shift();
+
+      const newResumeData = { ...current.resumeData, ...data };
+      set({
+        resumeData: newResumeData,
+        history: newHistory,
+        historyIndex: newHistory.length - 1,
+        canUndo: newHistory.length > 1,
+        canRedo: false,
+      });
+      saveToStorage(get() as unknown as ResumeState);
     },
 
     setSectionOrder: (order: string[]) => {
-      const historyUpdate = pushHistory(get());
-      set({ ...historyUpdate, sectionOrder: order });
-      saveToStorage(get());
+      const current = get();
+      const newHistory = current.history.slice(0, current.historyIndex + 1);
+      newHistory.push({
+        resumeData: { ...current.resumeData },
+        sectionOrder: [...current.sectionOrder],
+        sectionVisibility: { ...current.sectionVisibility },
+        theme: { ...current.theme },
+        activeSection: current.activeSection,
+        history: [],
+        historyIndex: -1,
+        canUndo: false,
+        canRedo: false,
+      } as ResumeStore);
+      if (newHistory.length > MAX_HISTORY) newHistory.shift();
+
+      set({
+        sectionOrder: order,
+        history: newHistory,
+        historyIndex: newHistory.length - 1,
+        canUndo: newHistory.length > 1,
+        canRedo: false,
+      });
+      saveToStorage(get() as unknown as ResumeState);
     },
 
     setSectionVisibility: (id: string, visible: boolean) => {
-      const historyUpdate = pushHistory(get());
+      const current = get();
+      const newHistory = current.history.slice(0, current.historyIndex + 1);
+      newHistory.push({
+        resumeData: { ...current.resumeData },
+        sectionOrder: [...current.sectionOrder],
+        sectionVisibility: { ...current.sectionVisibility },
+        theme: { ...current.theme },
+        activeSection: current.activeSection,
+        history: [],
+        historyIndex: -1,
+        canUndo: false,
+        canRedo: false,
+      } as ResumeStore);
+      if (newHistory.length > MAX_HISTORY) newHistory.shift();
+
       set({
-        ...historyUpdate,
-        sectionVisibility: { ...get().sectionVisibility, [id]: visible },
+        sectionVisibility: { ...current.sectionVisibility, [id]: visible },
+        history: newHistory,
+        historyIndex: newHistory.length - 1,
+        canUndo: newHistory.length > 1,
+        canRedo: false,
       });
-      saveToStorage(get());
+      saveToStorage(get() as unknown as ResumeState);
     },
 
     setTheme: (theme: Partial<ThemeConfig>) => {
       set({ theme: { ...get().theme, ...theme } });
-      saveToStorage(get());
+      saveToStorage(get() as unknown as ResumeState);
     },
 
     setActiveSection: (section: string) => {
@@ -165,7 +181,7 @@ export const useResumeStore = create<ResumeState>((set, get) => {
         canUndo: prevIndex > 0,
         canRedo: true,
       });
-      saveToStorage(get());
+      saveToStorage(get() as unknown as ResumeState);
     },
 
     redo: () => {
@@ -182,15 +198,13 @@ export const useResumeStore = create<ResumeState>((set, get) => {
         canUndo: true,
         canRedo: nextIndex < history.length - 1,
       });
-      saveToStorage(get());
+      saveToStorage(get() as unknown as ResumeState);
     },
 
-    canUndo: baseState.history.length > 0,
-    canRedo: false,
-
     resetResume: () => {
+      const fresh = buildInitialState();
       set({
-        ...initialState,
+        ...fresh,
         history: [],
         historyIndex: -1,
         canUndo: false,
@@ -202,15 +216,32 @@ export const useResumeStore = create<ResumeState>((set, get) => {
     },
 
     importResume: (data: ResumeState) => {
-      const historyUpdate = pushHistory(get());
+      const current = get();
+      const newHistory = current.history.slice(0, current.historyIndex + 1);
+      newHistory.push({
+        resumeData: { ...current.resumeData },
+        sectionOrder: [...current.sectionOrder],
+        sectionVisibility: { ...current.sectionVisibility },
+        theme: { ...current.theme },
+        activeSection: current.activeSection,
+        history: [],
+        historyIndex: -1,
+        canUndo: false,
+        canRedo: false,
+      } as ResumeStore);
+      if (newHistory.length > MAX_HISTORY) newHistory.shift();
+
       set({
-        ...historyUpdate,
         resumeData: data.resumeData,
         sectionOrder: data.sectionOrder,
         sectionVisibility: data.sectionVisibility,
         theme: data.theme,
+        history: newHistory,
+        historyIndex: newHistory.length - 1,
+        canUndo: newHistory.length > 1,
+        canRedo: false,
       });
-      saveToStorage(get());
+      saveToStorage(get() as unknown as ResumeState);
     },
 
     exportResume: () => {
@@ -236,6 +267,37 @@ export const useResumeStore = create<ResumeState>((set, get) => {
         importResume: () => {},
         exportResume: () => ({}) as ResumeState,
       };
+    },
+
+    _hydrate: () => {
+      if (get()._hydrated) return;
+      const stored = loadFromStorage();
+      if (!stored) {
+        set({ _hydrated: true });
+        return;
+      }
+
+      const hydrated = { ...get() };
+      if (stored.resumeData) {
+        hydrated.resumeData = {
+          ...get().resumeData,
+          ...stored.resumeData,
+          declaration: stored.resumeData.declaration || { ...sampleResumeData.declaration },
+        };
+      }
+      if (stored.sectionOrder) {
+        const missing = SECTION_IDS.filter((id) => !stored.sectionOrder!.includes(id));
+        hydrated.sectionOrder = [...stored.sectionOrder, ...missing];
+      }
+      if (stored.sectionVisibility) {
+        hydrated.sectionVisibility = { ...defaultSectionVisibility, ...stored.sectionVisibility };
+      }
+      if (stored.theme) {
+        hydrated.theme = { ...get().theme, ...stored.theme };
+      }
+      hydrated._hydrated = true;
+
+      set(hydrated);
     },
   };
 });

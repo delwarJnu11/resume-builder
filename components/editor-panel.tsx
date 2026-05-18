@@ -29,7 +29,7 @@ const sectionComponents: Record<string, React.ReactNode> = {
   declaration: <DeclarationSection />,
 };
 
-export default function EditorPanel() {
+export default function EditorPanel({ mode = 'resume' }: { mode?: 'resume' | 'cv' }) {
   const { activeSection } = useResumeStore();
 
   return (
@@ -39,7 +39,7 @@ export default function EditorPanel() {
           {SECTION_LABELS[activeSection] || 'Section'}
         </h2>
         <p className="text-xs text-slate-500 mt-0.5">
-          Fill in the details below to build your resume
+          {mode === 'cv' ? 'Fill in the details below to build your CV' : 'Fill in the details below to build your resume'}
         </p>
       </div>
       <div className="flex-1 overflow-y-auto">

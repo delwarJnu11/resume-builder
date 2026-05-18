@@ -177,7 +177,7 @@ function SortableSectionItem({
 	);
 }
 
-export default function Sidebar() {
+export default function Sidebar({ mode = 'resume' }: { mode?: 'resume' | 'cv' }) {
 	const {
 		sectionOrder,
 		sectionVisibility,
@@ -290,13 +290,40 @@ export default function Sidebar() {
 			{/* Header */}
 			<div className="px-5 py-4 border-b border-slate-100">
 				<div className="flex items-center gap-2.5">
-					<div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center">
+					<div className={`w-8 h-8 rounded-lg flex items-center justify-center ${mode === 'cv' ? 'bg-violet-600' : 'bg-slate-900'}`}>
 						<FileText className="w-4 h-4 text-white" />
 					</div>
-					<div>
-						<h1 className="text-sm font-bold text-slate-900">Resume Builder</h1>
-						<p className="text-xs text-slate-500">Professional CV Maker</p>
+					<div className="flex-1 min-w-0">
+						<h1 className="text-sm font-bold text-slate-900">
+							{mode === 'cv' ? 'CV Builder' : 'Resume Builder'}
+						</h1>
+						<p className="text-xs text-slate-500">
+							{mode === 'cv' ? 'Curriculum Vitae' : 'Professional CV Maker'}
+						</p>
 					</div>
+				</div>
+				{/* Mode switcher */}
+				<div className="flex gap-1.5 mt-3">
+					<a
+						href="/builder"
+						className={`flex-1 text-center py-1.5 text-xs font-semibold rounded-lg border transition-all ${
+							mode === 'resume'
+								? 'bg-slate-900 text-white border-slate-900'
+								: 'text-slate-500 border-slate-200 hover:border-slate-300 hover:text-slate-700'
+						}`}
+					>
+						Resume
+					</a>
+					<a
+						href="/cv-builder"
+						className={`flex-1 text-center py-1.5 text-xs font-semibold rounded-lg border transition-all ${
+							mode === 'cv'
+								? 'bg-violet-600 text-white border-violet-600'
+								: 'text-slate-500 border-slate-200 hover:border-slate-300 hover:text-slate-700'
+						}`}
+					>
+						CV
+					</a>
 				</div>
 			</div>
 
@@ -354,7 +381,7 @@ export default function Sidebar() {
 							transition={{ duration: 0.2 }}
 							className="overflow-hidden">
 							<div className="p-3 bg-slate-50 rounded-xl border border-slate-200">
-								<CustomizationPanel />
+								<CustomizationPanel mode={mode} />
 							</div>
 						</motion.div>
 					)}
