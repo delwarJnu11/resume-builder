@@ -1,65 +1,111 @@
-import Image from "next/image";
+'use client';
+
+import { useState } from 'react';
+import Sidebar from '@/components/sidebar';
+import EditorPanel from '@/components/editor-panel';
+import ResumePreview from '@/components/resume-preview';
+import ProgressBar from '@/components/progress-bar';
+import { Menu, X, PanelLeft, PanelRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Home() {
+  const [mobileView, setMobileView] = useState<'editor' | 'preview'>('editor');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <div className="h-screen flex flex-col bg-slate-50">
+      {/* Mobile Header */}
+      <header className="lg:hidden bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" size="sm" onClick={() => setSidebarOpen(!sidebarOpen)}>
+            {sidebarOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </Button>
+          <div className="flex items-center gap-2">
+            <div className="w-7 h-7 rounded-lg bg-slate-900 flex items-center justify-center">
+              <span className="text-white text-xs font-bold">R</span>
+            </div>
+            <span className="text-sm font-semibold">Resume Builder</span>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+        <div className="flex bg-slate-100 rounded-lg p-0.5">
+          <button
+            onClick={() => setMobileView('editor')}
+            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
+              mobileView === 'editor' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'
+            }`}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            <PanelLeft className="w-3.5 h-3.5" />
+          </button>
+          <button
+            onClick={() => setMobileView('preview')}
+            className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
+              mobileView === 'preview' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500'
+            }`}
           >
-            Documentation
-          </a>
+            <PanelRight className="w-3.5 h-3.5" />
+          </button>
         </div>
-      </main>
+      </header>
+
+      <div className="flex-1 flex overflow-hidden">
+        {/* Sidebar - Desktop */}
+        <div className="hidden lg:block">
+          <Sidebar />
+        </div>
+
+        {/* Sidebar - Mobile Overlay */}
+        <AnimatePresence>
+          {sidebarOpen && (
+            <>
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="lg:hidden fixed inset-0 z-40 bg-black/20"
+                onClick={() => setSidebarOpen(false)}
+              />
+              <motion.div
+                initial={{ x: -288 }}
+                animate={{ x: 0 }}
+                exit={{ x: -288 }}
+                transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+                className="lg:hidden fixed left-0 top-0 bottom-0 z-50 w-72"
+              >
+                <Sidebar />
+              </motion.div>
+            </>
+          )}
+        </AnimatePresence>
+
+        {/* Main Content */}
+        <main className="flex-1 flex overflow-hidden">
+          {/* Editor Panel */}
+          <div
+            className={`flex-1 flex flex-col overflow-hidden min-w-0 ${
+              mobileView === 'editor' ? 'block' : 'hidden lg:flex'
+            }`}
+          >
+            <div className="px-6 py-3 bg-white border-b border-slate-200">
+              <ProgressBar />
+            </div>
+            <div className="flex-1 overflow-hidden">
+              <EditorPanel />
+            </div>
+          </div>
+
+          {/* Preview Panel */}
+          <div
+            className={`flex-1 overflow-hidden bg-slate-100 border-l border-slate-200 ${
+              mobileView === 'preview' ? 'block' : 'hidden lg:block'
+            }`}
+          >
+            <div data-resume-preview className="h-full">
+              <ResumePreview />
+            </div>
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
