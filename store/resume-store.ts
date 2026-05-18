@@ -92,7 +92,8 @@ export const useResumeStore = create<ResumeStore>((set, get) => {
         historyIndex: -1,
         canUndo: false,
         canRedo: false,
-      } as ResumeStore);
+        _hydrated: true,
+      } as unknown as ResumeStore);
       if (newHistory.length > MAX_HISTORY) newHistory.shift();
 
       const newResumeData = { ...current.resumeData, ...data };
@@ -119,7 +120,8 @@ export const useResumeStore = create<ResumeStore>((set, get) => {
         historyIndex: -1,
         canUndo: false,
         canRedo: false,
-      } as ResumeStore);
+        _hydrated: true,
+      } as unknown as ResumeStore);
       if (newHistory.length > MAX_HISTORY) newHistory.shift();
 
       set({
@@ -145,7 +147,8 @@ export const useResumeStore = create<ResumeStore>((set, get) => {
         historyIndex: -1,
         canUndo: false,
         canRedo: false,
-      } as ResumeStore);
+        _hydrated: true,
+      } as unknown as ResumeStore);
       if (newHistory.length > MAX_HISTORY) newHistory.shift();
 
       set({
@@ -228,7 +231,8 @@ export const useResumeStore = create<ResumeStore>((set, get) => {
         historyIndex: -1,
         canUndo: false,
         canRedo: false,
-      } as ResumeStore);
+        _hydrated: true,
+      } as unknown as ResumeStore);
       if (newHistory.length > MAX_HISTORY) newHistory.shift();
 
       set({
@@ -256,6 +260,7 @@ export const useResumeStore = create<ResumeStore>((set, get) => {
         historyIndex: -1,
         canUndo: false,
         canRedo: false,
+        _hydrated: state._hydrated,
         setResumeData: () => {},
         setSectionOrder: () => {},
         setSectionVisibility: () => {},
