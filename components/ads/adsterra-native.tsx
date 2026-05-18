@@ -3,43 +3,54 @@
 import { useEffect, useRef } from 'react';
 
 interface AdsterraNativeProps {
-  /** Full Adsterra native banner script URL from your dashboard */
-  scriptSrc: string;
+  /** Adsterra ad key from dashboard */
+  adKey: string;
+  /** Banner width */
+  width?: number;
+  /** Banner height */
+  height?: number;
   /** Container className */
   className?: string;
 }
 
-/**
- * For Adsterra "Native Banner" or standard banner scripts.
- * Paste the exact script URL from your Adsterra dashboard.
- */
-export default function AdsterraNative({ scriptSrc, className = '' }: AdsterraNativeProps) {
+export default function AdsterraNative({
+  adKey,
+  width = 728,
+  height = 90,
+  className = '',
+}: AdsterraNativeProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const hasLoadedRef = useRef(false);
 
   useEffect(() => {
-    if (!containerRef.current || hasLoadedRef.current) return;
-    hasLoadedRef.current = true;
+    const container = containerRef.current;
+    if (!container) return;
+
+    // Set atOptions on window BEFORE loading invoke.js
+    (window as unknown as Record<string, unknown>).atOptions = {
+      key: adKey,
+      format: 'iframe',
+      height,
+      width,
+      params: {},
+    };
 
     const script = document.createElement('script');
-    script.src = scriptSrc;
+    script.src = `https://www.highperformanceformat.com/${adKey}/invoke.js`;
     script.async = true;
     script.setAttribute('data-cfasync', 'false');
 
-    containerRef.current.appendChild(script);
+    container.appendChild(script);
 
     return () => {
-      if (containerRef.current && script.parentNode === containerRef.current) {
-        containerRef.current.removeChild(script);
-        hasLoadedRef.current = false;
-      }
+      container.innerHTML = '';
     };
-  }, [scriptSrc]);
+  }, [adKey, width, height]);
 
   return (
     <div
       ref={containerRef}
-      className={`adsterra-native-banner overflow-hidden rounded-lg ${className}`}
+      className={`overflow-hidden ${className}`}
+      style={{ width: '100%', maxWidth: `${width}px`, minHeight: `${height}px` }}
     />
   );
 }

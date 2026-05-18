@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useResumeStore } from '@/store/resume-store';
-import { AdsterraNative } from '@/components/ads';
 
 export default function CVBuilderPage() {
   const [mobileView, setMobileView] = useState<'editor' | 'preview'>('editor');
@@ -104,28 +103,6 @@ export default function CVBuilderPage() {
             </div>
             <div className="flex-1 overflow-hidden">
               <EditorPanel mode="cv" />
-            </div>
-
-            {/* Mobile banner ad below editor */}
-            <div className="lg:hidden px-3 py-2 border-t border-slate-200 bg-white">
-              <div className="bg-slate-50 rounded-lg p-2 text-center">
-                <p className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Advertisement</p>
-                <AdsterraNative
-                  scriptSrc="https://pl26673851.effectivegatecpm.com/YOUR_MOBILE_BANNER_ID.js"
-                  className="min-h-[50px] flex items-center justify-center"
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Desktop banner ad between editor and preview */}
-          <div className="hidden lg:flex flex-col w-48 xl:w-56 bg-slate-50 border-l border-r border-slate-200 overflow-y-auto">
-            <div className="p-3 sticky top-0">
-              <p className="text-[10px] text-slate-400 uppercase tracking-wider mb-2 text-center">Advertisement</p>
-              <AdsterraNative
-                scriptSrc="https://pl26673851.effectivegatecpm.com/YOUR_DESKTOP_BANNER_ID.js"
-                className="min-h-[250px] flex items-center justify-center bg-white rounded-lg shadow-sm"
-              />
             </div>
           </div>
 

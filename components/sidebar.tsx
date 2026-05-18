@@ -7,7 +7,6 @@ import { exportToPDF } from "@/lib/export-pdf";
 import { cn } from "@/lib/utils";
 import { useResumeStore as useStore } from "@/store/resume-store";
 import { ResumeState, SECTION_LABELS } from "@/types";
-import { AdsterraNative } from "@/components/ads";
 import {
 	closestCenter,
 	DndContext,
@@ -360,18 +359,6 @@ export default function Sidebar({ mode = 'resume' }: { mode?: 'resume' | 'cv' })
 						</div>
 					</SortableContext>
 				</DndContext>
-			</div>
-
-			{/* Banner Ad in Sidebar */}
-			<div className="px-4 py-2 border-t border-slate-100">
-				<div className="bg-slate-50 rounded-lg p-2 text-center">
-					<p className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Advertisement</p>
-					{/* Replace the scriptSrc below with your actual Adsterra banner script URL */}
-					<AdsterraNative
-						scriptSrc="https://pl26673851.effectivegatecpm.com/YOUR_BANNER_SLOT_ID.js"
-						className="min-h-[100px] flex items-center justify-center"
-					/>
-				</div>
 			</div>
 
 			{/* Bottom actions */}
