@@ -22,8 +22,6 @@ export default function Home() {
 					<p className="text-xs text-slate-400 uppercase tracking-wider mb-3">Advertisement</p>
 					<AdsterraNative
 						adKey="025dafa42e4cef854a761b233b63dd00"
-						width={728}
-						height={90}
 						className="mx-auto"
 					/>
 				</div>
@@ -38,8 +36,6 @@ export default function Home() {
 					<p className="text-xs text-slate-400 uppercase tracking-wider mb-3">Advertisement</p>
 					<AdsterraNative
 						adKey="025dafa42e4cef854a761b233b63dd00"
-						width={728}
-						height={90}
 						className="mx-auto"
 					/>
 				</div>
@@ -56,8 +52,6 @@ export default function Home() {
 					<p className="text-xs text-slate-400 uppercase tracking-wider mb-3">Advertisement</p>
 					<AdsterraNative
 						adKey="025dafa42e4cef854a761b233b63dd00"
-						width={728}
-						height={90}
 						className="mx-auto"
 					/>
 				</div>

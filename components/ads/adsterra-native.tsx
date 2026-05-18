@@ -1,51 +1,47 @@
-"use client";
+'use client';
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef } from 'react';
 
 interface AdsterraNativeProps {
-	/** Adsterra ad key from dashboard */
-	adKey: string;
-	/** Banner width */
-	width?: number;
-	/** Banner height */
-	height?: number;
-	/** Container className */
-	className?: string;
+  /** Ad key from the invoke.js URL (e.g. '025dafa42e4cef854a761b233b63dd00') */
+  adKey: string;
+  /** Container className */
+  className?: string;
 }
 
-export default function AdsterraNative({ adKey, width = 728, height = 90, className = "" }: AdsterraNativeProps) {
-	const containerRef = useRef<HTMLDivElement>(null);
+export default function AdsterraNative({
+  adKey,
+  className = '',
+}: AdsterraNativeProps) {
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
-	useEffect(() => {
-		const container = containerRef.current;
-		if (!container) return;
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    if (!wrapper) return;
 
-		// Set atOptions on window BEFORE loading invoke.js
-		(window as unknown as Record<string, unknown>).atOptions = {
-			key: adKey,
-			format: "iframe",
-			height,
-			width,
-			params: {},
-		};
+    // 1. Create the container div with the exact ID Adsterra expects
+    const containerId = `container-${adKey}`;
+    const container = document.createElement('div');
+    container.id = containerId;
+    wrapper.appendChild(container);
 
-		const script = document.createElement("script");
-		script.src = `https://pl29485786.effectivecpmnetwork.com/${adKey}/invoke.js`;
-		script.async = true;
-		script.setAttribute("data-cfasync", "false");
+    // 2. Create and append the invoke.js script
+    const script = document.createElement('script');
+    script.src = `https://pl29485786.effectivecpmnetwork.com/${adKey}/invoke.js`;
+    script.async = true;
+    script.setAttribute('data-cfasync', 'false');
 
-		container.appendChild(script);
+    wrapper.appendChild(script);
 
-		return () => {
-			container.innerHTML = "";
-		};
-	}, [adKey, width, height]);
+    return () => {
+      wrapper.innerHTML = '';
+    };
+  }, [adKey]);
 
-	return (
-		<div
-			ref={containerRef}
-			className={`overflow-hidden ${className}`}
-			style={{ width: "100%", maxWidth: `${width}px`, minHeight: `${height}px` }}
-		/>
-	);
+  return (
+    <div
+      ref={wrapperRef}
+      className={`overflow-hidden ${className}`}
+    />
+  );
 }
