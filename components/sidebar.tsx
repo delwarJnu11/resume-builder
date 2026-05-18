@@ -313,7 +313,7 @@ export default function Sidebar() {
 					collisionDetection={closestCenter}
 					onDragEnd={handleDragEnd}>
 					<SortableContext items={sectionOrder} strategy={verticalListSortingStrategy}>
-						<div className="space-y-0.5">
+						<div className="space-y-0.5" suppressHydrationWarning>
 							{sectionOrder.map((sectionId, index) => (
 								<SortableSectionItem
 									key={sectionId}
