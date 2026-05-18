@@ -59,11 +59,11 @@ function SortableItem({
         </Button>
       </div>
 
-      <div className="p-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="p-3 sm:p-4">
+        <div className="grid grid-cols-1 gap-4">
           {fields.map((field) =>
             field.type === 'textarea' ? (
-              <div key={field.key} className={field.rows ? 'md:col-span-2' : ''}>
+              <div key={field.key}>
                 <Textarea
                   label={field.label}
                   value={(entry[field.key] as string) || ''}
@@ -432,8 +432,8 @@ export function LanguagesSection() {
                     <Trash2 className="w-3.5 h-3.5" />
                   </Button>
                 </div>
-                <div className="p-4 space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="p-3 sm:p-4 space-y-4">
+                  <div className="grid grid-cols-1 gap-4">
                     <Input
                       label="Language"
                       value={entry.language}
@@ -456,17 +456,17 @@ export function LanguagesSection() {
                       </select>
                     </div>
                   </div>
-                  <div className="flex gap-6">
+                  <div className="flex flex-wrap gap-4">
                     <label className="flex items-center gap-2 text-sm text-slate-600">
-                      <input type="checkbox" checked={entry.read} onChange={(e) => updateEntry(entry.id, 'read', e.target.checked)} className="rounded border-slate-300 text-slate-900 focus:ring-slate-900/20" />
+                      <input type="checkbox" checked={entry.read} onChange={(e) => updateEntry(entry.id, 'read', e.target.checked)} className="rounded border-slate-300 text-slate-900 focus:ring-slate-900/20 w-4 h-4" />
                       Read
                     </label>
                     <label className="flex items-center gap-2 text-sm text-slate-600">
-                      <input type="checkbox" checked={entry.write} onChange={(e) => updateEntry(entry.id, 'write', e.target.checked)} className="rounded border-slate-300 text-slate-900 focus:ring-slate-900/20" />
+                      <input type="checkbox" checked={entry.write} onChange={(e) => updateEntry(entry.id, 'write', e.target.checked)} className="rounded border-slate-300 text-slate-900 focus:ring-slate-900/20 w-4 h-4" />
                       Write
                     </label>
                     <label className="flex items-center gap-2 text-sm text-slate-600">
-                      <input type="checkbox" checked={entry.speak} onChange={(e) => updateEntry(entry.id, 'speak', e.target.checked)} className="rounded border-slate-300 text-slate-900 focus:ring-slate-900/20" />
+                      <input type="checkbox" checked={entry.speak} onChange={(e) => updateEntry(entry.id, 'speak', e.target.checked)} className="rounded border-slate-300 text-slate-900 focus:ring-slate-900/20 w-4 h-4" />
                       Speak
                     </label>
                   </div>

@@ -42,46 +42,50 @@ function SortableSkillItem({
       ref={setNodeRef}
       style={style}
       className={cn(
-        'flex items-center gap-3 p-3 bg-white rounded-lg border border-slate-200',
+        'flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 p-3 bg-white rounded-lg border border-slate-200',
         isDragging && 'opacity-50 shadow-lg'
       )}
     >
-      <button {...attributes} {...listeners} className="cursor-grab p-1 hover:bg-slate-100 rounded" aria-label="Drag to reorder">
-        <GripVertical className="w-4 h-4 text-slate-400" />
-      </button>
-      <Input
-        value={entry.name}
-        onChange={(e) => onUpdate('name', e.target.value)}
-        placeholder="Skill name"
-        className="flex-1"
-        id={`skill-${entry.id}`}
-      />
-      <select
-        value={entry.category}
-        onChange={(e) => onUpdate('category', e.target.value)}
-        className="h-10 rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900/20"
-        aria-label="Skill category"
-      >
-        <option value="Technical">Technical</option>
-        <option value="Soft">Soft</option>
-        <option value="Language">Language</option>
-        <option value="Tool">Tool</option>
-      </select>
-      <div className="flex items-center gap-2 w-28">
-        <input
-          type="range"
-          min="0"
-          max="100"
-          value={entry.level}
-          onChange={(e) => onUpdate('level', parseInt(e.target.value))}
-          className="flex-1 accent-slate-900"
-          aria-label="Skill level"
+      <div className="flex items-center gap-2 w-full sm:w-auto">
+        <button {...attributes} {...listeners} className="cursor-grab p-1 hover:bg-slate-100 rounded shrink-0" aria-label="Drag to reorder">
+          <GripVertical className="w-4 h-4 text-slate-400" />
+        </button>
+        <Input
+          value={entry.name}
+          onChange={(e) => onUpdate('name', e.target.value)}
+          placeholder="Skill name"
+          className="flex-1 min-w-0"
+          id={`skill-${entry.id}`}
         />
-        <span className="text-xs font-medium text-slate-500 w-8 text-right">{entry.level}%</span>
       </div>
-      <Button variant="ghost" size="sm" onClick={onDelete} className="h-7 w-7 p-0 text-slate-400 hover:text-red-500 hover:bg-red-50">
-        <Trash2 className="w-3.5 h-3.5" />
-      </Button>
+      <div className="flex items-center gap-2 w-full sm:w-auto">
+        <select
+          value={entry.category}
+          onChange={(e) => onUpdate('category', e.target.value)}
+          className="h-10 flex-1 sm:flex-none rounded-lg border border-slate-200 bg-white px-3 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-slate-900/20"
+          aria-label="Skill category"
+        >
+          <option value="Technical">Technical</option>
+          <option value="Soft">Soft</option>
+          <option value="Language">Language</option>
+          <option value="Tool">Tool</option>
+        </select>
+        <div className="flex items-center gap-2 w-28 shrink-0">
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={entry.level}
+            onChange={(e) => onUpdate('level', parseInt(e.target.value))}
+            className="flex-1 accent-slate-900"
+            aria-label="Skill level"
+          />
+          <span className="text-xs font-medium text-slate-500 w-8 text-right">{entry.level}%</span>
+        </div>
+        <Button variant="ghost" size="sm" onClick={onDelete} className="h-7 w-7 p-0 text-slate-400 hover:text-red-500 hover:bg-red-50 shrink-0">
+          <Trash2 className="w-3.5 h-3.5" />
+        </Button>
+      </div>
     </div>
   );
 }

@@ -79,8 +79,8 @@ function SortableEducationItem({
         </Button>
       </div>
 
-      <div className="p-4 space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="p-3 sm:p-4 space-y-4">
+        <div className="grid grid-cols-1 gap-4">
           <Input
             label="Degree / Examination"
             value={entry.degree}
@@ -95,48 +95,54 @@ function SortableEducationItem({
             placeholder="BUET"
             id={`institution-${entry.id}`}
           />
-          <Input
-            label="University"
-            value={entry.university}
-            onChange={(e) => onUpdate('university', e.target.value)}
-            placeholder="BUET"
-            id={`university-${entry.id}`}
-          />
-          <Input
-            label="Board (for SSC/HSC)"
-            value={entry.board}
-            onChange={(e) => onUpdate('board', e.target.value)}
-            placeholder="Dhaka"
-            id={`board-${entry.id}`}
-          />
-          <Input
-            label="Subject / Group"
-            value={entry.subject}
-            onChange={(e) => onUpdate('subject', e.target.value)}
-            placeholder="CSE / Science"
-            id={`subject-${entry.id}`}
-          />
-          <Input
-            label="Year of Passing"
-            value={entry.yearOfPassing}
-            onChange={(e) => onUpdate('yearOfPassing', e.target.value)}
-            placeholder="2018"
-            id={`year-${entry.id}`}
-          />
-          <Input
-            label="Duration"
-            value={entry.duration}
-            onChange={(e) => onUpdate('duration', e.target.value)}
-            placeholder="4 Years"
-            id={`duration-${entry.id}`}
-          />
-          <Input
-            label="CGPA"
-            value={entry.cgpa}
-            onChange={(e) => onUpdate('cgpa', e.target.value)}
-            placeholder="3.75"
-            id={`cgpa-${entry.id}`}
-          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Input
+              label="University"
+              value={entry.university}
+              onChange={(e) => onUpdate('university', e.target.value)}
+              placeholder="BUET"
+              id={`university-${entry.id}`}
+            />
+            <Input
+              label="Board (for SSC/HSC)"
+              value={entry.board}
+              onChange={(e) => onUpdate('board', e.target.value)}
+              placeholder="Dhaka"
+              id={`board-${entry.id}`}
+            />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Input
+              label="Subject / Group"
+              value={entry.subject}
+              onChange={(e) => onUpdate('subject', e.target.value)}
+              placeholder="CSE / Science"
+              id={`subject-${entry.id}`}
+            />
+            <Input
+              label="Year of Passing"
+              value={entry.yearOfPassing}
+              onChange={(e) => onUpdate('yearOfPassing', e.target.value)}
+              placeholder="2018"
+              id={`year-${entry.id}`}
+            />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Input
+              label="Duration"
+              value={entry.duration}
+              onChange={(e) => onUpdate('duration', e.target.value)}
+              placeholder="4 Years"
+              id={`duration-${entry.id}`}
+            />
+            <Input
+              label="CGPA"
+              value={entry.cgpa}
+              onChange={(e) => onUpdate('cgpa', e.target.value)}
+              placeholder="3.75"
+              id={`cgpa-${entry.id}`}
+            />
+          </div>
           <Input
             label="Grade / Division"
             value={entry.grade}

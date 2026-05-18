@@ -113,7 +113,7 @@ function SortableSectionItem({
 			ref={setNodeRef}
 			style={style}
 			className={cn(
-				"group flex items-center gap-1.5 px-2 py-2 rounded-lg cursor-pointer transition-all duration-150",
+				"group flex items-center gap-1.5 px-2 py-2.5 rounded-lg cursor-pointer transition-all duration-150 min-h-[44px]",
 				isDragging && "opacity-40 z-50",
 				showActive ? "bg-slate-900 text-white shadow-sm" : "text-slate-600 hover:bg-slate-100 hover:text-slate-900",
 			)}
@@ -123,11 +123,11 @@ function SortableSectionItem({
 			aria-label={`Select ${label} section`}
 			onKeyDown={(e) => e.key === "Enter" && onClick()}>
 
-			{/* Drag handle */}
+			{/* Drag handle - hidden on mobile, shown on desktop */}
 			<button
 				{...attributes}
 				{...listeners}
-				className="cursor-grab p-0.5 rounded opacity-0 group-hover:opacity-50 transition-opacity shrink-0"
+				className="cursor-grab p-0.5 rounded opacity-0 group-hover:opacity-50 transition-opacity shrink-0 hidden sm:block"
 				aria-label="Drag to reorder"
 				onClick={(e) => e.stopPropagation()}
 				suppressHydrationWarning>
@@ -142,8 +142,8 @@ function SortableSectionItem({
 			{/* Label */}
 			<span className="text-sm font-medium flex-1 truncate">{label}</span>
 
-			{/* Up / Down buttons */}
-			<div className="flex flex-col opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+			{/* Up / Down buttons - hidden on mobile */}
+			<div className="flex flex-col opacity-0 group-hover:opacity-100 transition-opacity shrink-0 hidden sm:flex">
 				<button
 					onClick={(e) => { e.stopPropagation(); onMoveUp(); }}
 					disabled={index === 0}
@@ -169,9 +169,9 @@ function SortableSectionItem({
 			{/* Visibility toggle */}
 			<button
 				onClick={(e) => { e.stopPropagation(); onToggleVisibility(); }}
-				className={cn("p-1 rounded transition-colors shrink-0", showActive ? "hover:bg-white/20" : "hover:bg-slate-200")}
+				className={cn("p-2 rounded transition-colors shrink-0", showActive ? "hover:bg-white/20" : "hover:bg-slate-200")}
 				aria-label={showVisible ? `Hide ${label}` : `Show ${label}`}>
-				{showVisible ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5 opacity-40" />}
+				{showVisible ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4 opacity-40" />}
 			</button>
 		</div>
 	);
@@ -286,9 +286,9 @@ export default function Sidebar({ mode = 'resume' }: { mode?: 'resume' | 'cv' })
 	};
 
 	return (
-		<aside className="w-72 bg-white border-r border-slate-200 flex flex-col h-full">
+		<aside className="w-72 bg-white border-r border-slate-200 flex flex-col h-full max-h-screen">
 			{/* Header */}
-			<div className="px-5 py-4 border-b border-slate-100">
+			<div className="px-4 sm:px-5 py-3 sm:py-4 border-b border-slate-100">
 				<div className="flex items-center gap-2.5">
 					<div className={`w-8 h-8 rounded-lg flex items-center justify-center ${mode === 'cv' ? 'bg-violet-600' : 'bg-slate-900'}`}>
 						<FileText className="w-4 h-4 text-white" />
@@ -297,7 +297,7 @@ export default function Sidebar({ mode = 'resume' }: { mode?: 'resume' | 'cv' })
 						<h1 className="text-sm font-bold text-slate-900">
 							{mode === 'cv' ? 'CV Builder' : 'Resume Builder'}
 						</h1>
-						<p className="text-xs text-slate-500">
+						<p className="text-xs text-slate-500 truncate">
 							{mode === 'cv' ? 'Curriculum Vitae' : 'Professional CV Maker'}
 						</p>
 					</div>
@@ -306,7 +306,7 @@ export default function Sidebar({ mode = 'resume' }: { mode?: 'resume' | 'cv' })
 				<div className="flex gap-1.5 mt-3">
 					<a
 						href="/builder"
-						className={`flex-1 text-center py-1.5 text-xs font-semibold rounded-lg border transition-all ${
+						className={`flex-1 text-center py-2 text-xs font-semibold rounded-lg border transition-all ${
 							mode === 'resume'
 								? 'bg-slate-900 text-white border-slate-900'
 								: 'text-slate-500 border-slate-200 hover:border-slate-300 hover:text-slate-700'
@@ -316,7 +316,7 @@ export default function Sidebar({ mode = 'resume' }: { mode?: 'resume' | 'cv' })
 					</a>
 					<a
 						href="/cv-builder"
-						className={`flex-1 text-center py-1.5 text-xs font-semibold rounded-lg border transition-all ${
+						className={`flex-1 text-center py-2 text-xs font-semibold rounded-lg border transition-all ${
 							mode === 'cv'
 								? 'bg-violet-600 text-white border-violet-600'
 								: 'text-slate-500 border-slate-200 hover:border-slate-300 hover:text-slate-700'
@@ -330,11 +330,11 @@ export default function Sidebar({ mode = 'resume' }: { mode?: 'resume' | 'cv' })
 			{/* Section label */}
 			<div className="px-4 pt-3 pb-1">
 				<p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Sections</p>
-				<p className="text-xs text-slate-400 mt-0.5">Drag or use arrows to reorder</p>
+				<p className="text-xs text-slate-400 mt-0.5 hidden sm:block">Drag or use arrows to reorder</p>
 			</div>
 
 			{/* Sortable section list */}
-			<div className="flex-1 overflow-y-auto px-3 py-1">
+			<div className="flex-1 overflow-y-auto px-3 py-1 min-h-0">
 				<DndContext
 					sensors={sensors}
 					collisionDetection={closestCenter}
@@ -350,7 +350,7 @@ export default function Sidebar({ mode = 'resume' }: { mode?: 'resume' | 'cv' })
 									label={SECTION_LABELS[sectionId] || sectionId}
 									isActive={activeSection === sectionId}
 									isVisible={sectionVisibility[sectionId] !== false}
-									onClick={() => setActiveSection(sectionId)}
+									onClick={() => { setActiveSection(sectionId); }}
 									onToggleVisibility={() => setSectionVisibility(sectionId, !sectionVisibility[sectionId])}
 									onMoveUp={() => handleMoveUp(index)}
 									onMoveDown={() => handleMoveDown(index)}
@@ -362,11 +362,11 @@ export default function Sidebar({ mode = 'resume' }: { mode?: 'resume' | 'cv' })
 			</div>
 
 			{/* Bottom actions */}
-			<div className="px-4 py-3 border-t border-slate-100 space-y-2">
+			<div className="px-4 py-3 border-t border-slate-100 space-y-2 pb-safe">
 				<Button
 					variant="outline"
 					size="sm"
-					className={cn("w-full justify-start gap-2", showCustomization && "bg-slate-50 border-slate-300")}
+					className={cn("w-full justify-start gap-2 min-h-[40px]", showCustomization && "bg-slate-50 border-slate-300")}
 					onClick={() => setShowCustomization(!showCustomization)}>
 					<Settings2 className="w-4 h-4" />
 					Customize Design
@@ -388,34 +388,34 @@ export default function Sidebar({ mode = 'resume' }: { mode?: 'resume' | 'cv' })
 				</AnimatePresence>
 
 				<div className="flex gap-1.5">
-					<Button variant="ghost" size="sm" onClick={undo} disabled={!canUndo} className="flex-1" aria-label="Undo">
+					<Button variant="ghost" size="sm" onClick={undo} disabled={!canUndo} className="flex-1 min-h-[40px]" aria-label="Undo">
 						<Undo2 className="w-3.5 h-3.5" />
 					</Button>
-					<Button variant="ghost" size="sm" onClick={redo} disabled={!canRedo} className="flex-1" aria-label="Redo">
+					<Button variant="ghost" size="sm" onClick={redo} disabled={!canRedo} className="flex-1 min-h-[40px]" aria-label="Redo">
 						<Redo2 className="w-3.5 h-3.5" />
 					</Button>
 				</div>
 
 				<div className="grid grid-cols-2 gap-1.5">
-					<Button variant="outline" size="sm" onClick={handleExportPDF} className="justify-center gap-1.5">
+					<Button variant="outline" size="sm" onClick={handleExportPDF} className="justify-center gap-1.5 min-h-[40px]">
 						<FileDown className="w-3.5 h-3.5" />
 						PDF
 					</Button>
-					<Button variant="outline" size="sm" onClick={handleExportDOCX} className="justify-center gap-1.5">
+					<Button variant="outline" size="sm" onClick={handleExportDOCX} className="justify-center gap-1.5 min-h-[40px]">
 						<FileType className="w-3.5 h-3.5" />
 						DOCX
 					</Button>
 				</div>
 
 				<div className="flex gap-1.5">
-					<Button variant="ghost" size="sm" onClick={handleExportJSON} className="flex-1" title="Export JSON">
+					<Button variant="ghost" size="sm" onClick={handleExportJSON} className="flex-1 min-h-[40px]" title="Export JSON">
 						<Download className="w-3.5 h-3.5" />
 					</Button>
 					<Button
 						variant="ghost"
 						size="sm"
 						onClick={() => fileInputRef.current?.click()}
-						className="flex-1"
+						className="flex-1 min-h-[40px]"
 						title="Import JSON">
 						<Upload className="w-3.5 h-3.5" />
 					</Button>
@@ -423,7 +423,7 @@ export default function Sidebar({ mode = 'resume' }: { mode?: 'resume' | 'cv' })
 						variant="ghost"
 						size="sm"
 						onClick={handleReset}
-						className="flex-1 text-red-500 hover:text-red-600 hover:bg-red-50"
+						className="flex-1 text-red-500 hover:text-red-600 hover:bg-red-50 min-h-[40px]"
 						title="Reset">
 						<RotateCcw className="w-3.5 h-3.5" />
 					</Button>

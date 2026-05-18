@@ -35,14 +35,14 @@ export default function PersonalSection() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4 p-4 bg-slate-50 rounded-xl border border-slate-100">
+    <div className="space-y-5 sm:space-y-6">
+      <div className="flex items-center gap-3 sm:gap-4 p-3 sm:p-4 bg-slate-50 rounded-xl border border-slate-100">
         <div className="relative group">
-          <div className="w-20 h-20 rounded-full bg-slate-100 border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-slate-100 border-2 border-dashed border-slate-300 flex items-center justify-center overflow-hidden">
             {isMounted && personal.photo ? (
               <img src={personal.photo} alt="Profile" className="w-full h-full object-cover" />
             ) : (
-              <UserCircle className="w-10 h-10 text-slate-300" />
+              <UserCircle className="w-8 h-8 sm:w-10 sm:h-10 text-slate-300" />
             )}
           </div>
           <button
@@ -63,7 +63,7 @@ export default function PersonalSection() {
 
       <div>
         <h3 className="text-sm font-semibold text-slate-900 mb-3">Basic Information</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 gap-4">
           <Input
             label="Full Name *"
             value={personal.fullName}
@@ -71,62 +71,70 @@ export default function PersonalSection() {
             placeholder="Md. Abdullah Al Mamun"
             id="fullName"
           />
-          <Input
-            label="Father&apos;s Name"
-            value={personal.fatherName}
-            onChange={(e) => updateField('fatherName', e.target.value)}
-            placeholder="Md. Abdul Karim"
-            id="fatherName"
-          />
-          <Input
-            label="Mother&apos;s Name"
-            value={personal.motherName}
-            onChange={(e) => updateField('motherName', e.target.value)}
-            placeholder="Fatema Begum"
-            id="motherName"
-          />
-          <Input
-            label="Date of Birth"
-            type="date"
-            value={personal.dateOfBirth}
-            onChange={(e) => updateField('dateOfBirth', e.target.value)}
-            id="dateOfBirth"
-          />
-          <Select
-            label="Gender"
-            value={personal.gender}
-            onChange={(e) => updateField('gender', e.target.value)}
-            options={GENDERS.map((g) => ({ value: g, label: g }))}
-            id="gender"
-          />
-          <Select
-            label="Marital Status"
-            value={personal.maritalStatus}
-            onChange={(e) => updateField('maritalStatus', e.target.value)}
-            options={MARITAL_STATUSES.map((m) => ({ value: m, label: m }))}
-            id="maritalStatus"
-          />
-          <Input
-            label="Nationality"
-            value={personal.nationality}
-            onChange={(e) => updateField('nationality', e.target.value)}
-            placeholder="Bangladeshi"
-            id="nationality"
-          />
-          <Input
-            label="Religion"
-            value={personal.religion}
-            onChange={(e) => updateField('religion', e.target.value)}
-            placeholder="Islam"
-            id="religion"
-          />
-          <Select
-            label="Blood Group"
-            value={personal.bloodGroup}
-            onChange={(e) => updateField('bloodGroup', e.target.value)}
-            options={BLOOD_GROUPS.map((b) => ({ value: b, label: b }))}
-            id="bloodGroup"
-          />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Input
+              label="Father&apos;s Name"
+              value={personal.fatherName}
+              onChange={(e) => updateField('fatherName', e.target.value)}
+              placeholder="Md. Abdul Karim"
+              id="fatherName"
+            />
+            <Input
+              label="Mother&apos;s Name"
+              value={personal.motherName}
+              onChange={(e) => updateField('motherName', e.target.value)}
+              placeholder="Fatema Begum"
+              id="motherName"
+            />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Input
+              label="Date of Birth"
+              type="date"
+              value={personal.dateOfBirth}
+              onChange={(e) => updateField('dateOfBirth', e.target.value)}
+              id="dateOfBirth"
+            />
+            <Select
+              label="Gender"
+              value={personal.gender}
+              onChange={(e) => updateField('gender', e.target.value)}
+              options={GENDERS.map((g) => ({ value: g, label: g }))}
+              id="gender"
+            />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Select
+              label="Marital Status"
+              value={personal.maritalStatus}
+              onChange={(e) => updateField('maritalStatus', e.target.value)}
+              options={MARITAL_STATUSES.map((m) => ({ value: m, label: m }))}
+              id="maritalStatus"
+            />
+            <Input
+              label="Nationality"
+              value={personal.nationality}
+              onChange={(e) => updateField('nationality', e.target.value)}
+              placeholder="Bangladeshi"
+              id="nationality"
+            />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Input
+              label="Religion"
+              value={personal.religion}
+              onChange={(e) => updateField('religion', e.target.value)}
+              placeholder="Islam"
+              id="religion"
+            />
+            <Select
+              label="Blood Group"
+              value={personal.bloodGroup}
+              onChange={(e) => updateField('bloodGroup', e.target.value)}
+              options={BLOOD_GROUPS.map((b) => ({ value: b, label: b }))}
+              id="bloodGroup"
+            />
+          </div>
           <Input
             label="NID Number"
             value={personal.nid}
@@ -161,7 +169,7 @@ export default function PersonalSection() {
 
       <div>
         <h3 className="text-sm font-semibold text-slate-900 mb-3">Contact</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <Input
             label="Phone"
             value={personal.phone}

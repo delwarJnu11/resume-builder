@@ -34,8 +34,8 @@ export default function EditorPanel({ mode = 'resume' }: { mode?: 'resume' | 'cv
 
   return (
     <div className="flex flex-col h-full bg-slate-50/50">
-      <div className="px-6 py-4 bg-white border-b border-slate-200">
-        <h2 className="text-base font-semibold text-slate-900">
+      <div className="px-4 sm:px-6 py-3 sm:py-4 bg-white border-b border-slate-200">
+        <h2 className="text-sm sm:text-base font-semibold text-slate-900">
           {SECTION_LABELS[activeSection] || 'Section'}
         </h2>
         <p className="text-xs text-slate-500 mt-0.5">
@@ -43,13 +43,13 @@ export default function EditorPanel({ mode = 'resume' }: { mode?: 'resume' | 'cv
         </p>
       </div>
       <div className="flex-1 overflow-y-auto">
-        <div className="p-6">
+        <div className="p-3 sm:p-6">
           <motion.div
             key={activeSection}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.2 }}
-            className="bg-white rounded-xl border border-slate-200 shadow-sm p-6"
+            className="bg-white rounded-xl border border-slate-200 shadow-sm p-4 sm:p-6"
           >
             <AnimatePresence mode="wait">
               {sectionComponents[activeSection] || (

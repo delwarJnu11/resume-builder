@@ -67,8 +67,8 @@ function SortableExperienceItem({
         </Button>
       </div>
 
-      <div className="p-4 space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="p-3 sm:p-4 space-y-4">
+        <div className="grid grid-cols-1 gap-4">
           <Input
             label="Organization / Company *"
             value={entry.organization}
@@ -83,45 +83,49 @@ function SortableExperienceItem({
             placeholder="Software Engineer"
             id={`desig-${entry.id}`}
           />
-          <Input
-            label="Department"
-            value={entry.department}
-            onChange={(e) => onUpdate('department', e.target.value)}
-            placeholder="Engineering"
-            id={`dept-${entry.id}`}
-          />
-          <Input
-            label="Location"
-            value={entry.location}
-            onChange={(e) => onUpdate('location', e.target.value)}
-            placeholder="Dhaka, Bangladesh"
-            id={`loc-${entry.id}`}
-          />
-          <Input
-            label="Start Date"
-            type="month"
-            value={entry.startDate}
-            onChange={(e) => onUpdate('startDate', e.target.value)}
-            id={`start-${entry.id}`}
-          />
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <Input
-              label="End Date"
-              type="month"
-              value={entry.endDate}
-              onChange={(e) => onUpdate('endDate', e.target.value)}
-              disabled={entry.isCurrent}
-              id={`end-${entry.id}`}
+              label="Department"
+              value={entry.department}
+              onChange={(e) => onUpdate('department', e.target.value)}
+              placeholder="Engineering"
+              id={`dept-${entry.id}`}
             />
-            <label className="flex items-center gap-2 text-sm text-slate-600">
-              <input
-                type="checkbox"
-                checked={entry.isCurrent}
-                onChange={(e) => onUpdate('isCurrent', e.target.checked)}
-                className="rounded border-slate-300 text-slate-900 focus:ring-slate-900/20"
+            <Input
+              label="Location"
+              value={entry.location}
+              onChange={(e) => onUpdate('location', e.target.value)}
+              placeholder="Dhaka, Bangladesh"
+              id={`loc-${entry.id}`}
+            />
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Input
+              label="Start Date"
+              type="month"
+              value={entry.startDate}
+              onChange={(e) => onUpdate('startDate', e.target.value)}
+              id={`start-${entry.id}`}
+            />
+            <div className="space-y-3">
+              <Input
+                label="End Date"
+                type="month"
+                value={entry.endDate}
+                onChange={(e) => onUpdate('endDate', e.target.value)}
+                disabled={entry.isCurrent}
+                id={`end-${entry.id}`}
               />
-              Currently working here
-            </label>
+              <label className="flex items-center gap-2 text-sm text-slate-600">
+                <input
+                  type="checkbox"
+                  checked={entry.isCurrent}
+                  onChange={(e) => onUpdate('isCurrent', e.target.checked)}
+                  className="rounded border-slate-300 text-slate-900 focus:ring-slate-900/20 w-4 h-4"
+                />
+                Currently working here
+              </label>
+            </div>
           </div>
         </div>
 
