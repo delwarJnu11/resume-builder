@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 import './globals.css';
 import { Toaster } from 'sonner';
-import AdsterraGlobalAds from '@/components/ads/adsterra-global';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -19,7 +19,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className} suppressHydrationWarning>
-        <AdsterraGlobalAds />
+        {/* Popunder Ad - loads before hydration for proper event listener attachment */}
+        <Script
+          id="adsterra-popunder"
+          strategy="beforeInteractive"
+          src="https://pl29485623.effectivecpmnetwork.com/17/29/4d/17294d9a11b1cd0b71fc75561dfe45ff.js"
+          data-cfasync="false"
+        />
         {children}
         <Toaster position="top-right" />
       </body>
